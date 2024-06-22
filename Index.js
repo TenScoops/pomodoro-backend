@@ -1,11 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-require('dotenv').config();
 const cors = require('cors');
 
 const app = express();
 
 const authRoutes = require('./Auth'); // Import authentication routes
+const ratingRoutes = require('./Routes/RatingRoutes'); // Import rating routes
 
 const corsOptions = {
     origin: 'http://localhost:3001', // Replace with your frontend URL
@@ -27,7 +28,8 @@ app.use(session({
 
 // Mount the authentication routes at '/auth' prefix
 app.use('/auth', authRoutes);
-
+// Mount rating routes under '/api'
+app.use('/api', ratingRoutes); 
 
 const PORT = 3000;
 app.listen(PORT, () => {

@@ -15,9 +15,9 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: 'http://localhost:3000/auth/google/callback' // Use the full callback URL
 },
-function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
-    cb(null, profile);
+async (accessToken, refreshToken, profile, cb) => {
+    return cb(null, profile)
+    
 }));
 
 // Serialize and deserialize user (adjust if you store user data)
