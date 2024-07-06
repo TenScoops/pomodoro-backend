@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const authController = require('../controllers/authController')
 
 
 const router = express.Router();
@@ -10,11 +10,11 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 // Passport Google OAuth strategy configuration
-passport.use(AuthController.GoogleStrategy)
+passport.use(authController.googleStrategy)
 
 // Serialize and deserialize user (adjust if you store user data)
-passport.serializeUser(AuthController.serializeUser);
-passport.deserializeUser(AuthController.deserializeUser)
+passport.serializeUser(authController.serializeUser);
+passport.deserializeUser(authController.deserializeUser)
 
 // Authentication routes
 router.get('/google', 
@@ -28,18 +28,18 @@ router.get('/google/callback', passport.authenticate('google', {
 )
 
 //on login success
-router.get('/success', AuthController.loginSuccess)
+router.get('/success', authController.loginSuccess)
 
 //on login failure
-router.get('/failure', AuthController.loginFailure)
+router.get('/failure', authController.loginFailure)
 
 //logout route
-router.get('/logout', AuthController.logout)
+router.get('/logout', authController.logout)
 
 //check authentication status
-router.get('/status', AuthController.checkAuthStatus)
+router.get('/status', authController.checkAuthStatus)
 
 //get user info
-router.get('/user', AuthController.getUser)
+router.get('/user', authController.getUser)
 
 module.exports = router; 

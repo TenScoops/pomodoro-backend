@@ -7,3 +7,10 @@ CREATE TABLE Activity (
     date DATE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
+
+CREATE TABLE User (
+    userId INT AUTO_INCREMENT PRIMARY KEY,
+    email varchar(255),
+    name varchar(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)

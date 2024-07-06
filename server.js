@@ -2,11 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const bodyParser = require('body-parser')
+const routes = require('./routes')//come back and chaage
 
 const app = express();
 
-const authRoutes = require('./Auth'); // Import authentication routes
-const ratingRoutes = require('./Routes/RatingRoutes'); // Import rating routes
+// Middleware for parsing JSON and URL-encoded form data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const corsOptions = {
     origin: 'http://localhost:3001', // Replace with your frontend URL
@@ -26,10 +29,9 @@ app.use(session({
     }
 }))
 
-// Mount the authentication routes at '/auth' prefix
-app.use('/auth', authRoutes);
-// Mount rating routes under '/api'
-app.use('/api', ratingRoutes); 
+
+app.use('/', routes); // Using the main router for all root paths
+
 
 const PORT = 3000;
 app.listen(PORT, () => {
