@@ -1,8 +1,5 @@
-const db = require('../db')
-const passport = require('passport')
+const db = require('../db/database')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-
-
 
 
 const googleStrategy = new GoogleStrategy({
@@ -12,14 +9,14 @@ const googleStrategy = new GoogleStrategy({
 }, async (accessToken, refreshToken, profile, cb) => {
     try {
         
-        const[rows] = await db.execute('SELECT * FROM user WHERE email = ?', [profile.emails[0].value])
+        const[rows] = await db.execute('SELECT * FROM users WHERE email = ?', [profile.emails[0].value])
         //if a user was found
         if(rows.length > 0) {
             return cb(null, rows[0])
         }else {
             //create new user
-            const [result] = await db.execute('INSERT INTO User (email, name) VALYES (?, ?)', [profile.emails[0].value, profile.displayName])
-            const [newUser] = await db.execute('SELECT * FROM User WHERE userId = ?', [result.insertId])
+            const [result] = await db.execute('INSERT INTO users (email, name) VALUES (?, ?)', [profile.emails[0].value, profile.displayName])
+            const [newUser] = await db.execute('SELECT * FROM users WHERE user_id = ?', [result.insertId])
             return cb(null, newUser[0])
         }
 
@@ -28,13 +25,16 @@ const googleStrategy = new GoogleStrategy({
     }
 })
 
+//When a user logs in, this function saves their user ID to the session
 const serializeUser = function(user, cb) {
-    cb(null, user.userId)
+    cb(null, user.user_id)
 }
 
+//this function uses the saved user ID to fetch the full user details from 
+//the database and make them available in the request object (req.user)
 const deserializeUser = async function(id, cb) {
     try {
-        const [rows] = await db.execute('SELECT * FROM User WHERE userId = ?', [id]);
+        const [rows] = await db.execute('SELECT * FROM users WHERE user_id = ?', [id]);
         if (rows.length > 0) {
             cb(null, rows[0]);
         } else {
