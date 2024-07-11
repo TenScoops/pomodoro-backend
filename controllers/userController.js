@@ -1,4 +1,4 @@
-const db = require('../db')// db/database
+const db = require('../db/database')
 
 const getUserProfile = async (req, res) => {
     try{
@@ -41,8 +41,8 @@ const deleteUser = async(req, res) => {
     }
 }
 
-module.exports(
+module.exports = {
     getUserProfile,
     updateUserProfile,
     deleteUser
-)
+}

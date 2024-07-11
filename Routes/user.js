@@ -11,3 +11,5 @@ router.put('/:id', userController.updateUserProfile)
 
 //delete user account
 router.delete('/:id', userController.deleteUser)
+
+module.exports = router;
