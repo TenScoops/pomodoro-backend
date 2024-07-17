@@ -41,6 +41,15 @@ const deleteUser = async(req, res) => {
     }
 }
 
+const getUserId = async(req, res) => {
+    try{
+        const id = await db.execute('SELECT user_id FROM users WHERE user_id = ?',[req.params.id])
+        res.send(id)
+    }catch(err){
+        res.status(500).send(err.message)
+    }
+}
+
 module.exports = {
     getUserProfile,
     updateUserProfile,

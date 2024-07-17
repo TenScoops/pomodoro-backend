@@ -4,12 +4,12 @@ const userController = require('../controllers/userController')
 const router = express.Router()
 
 //get user profile
-router.get('/:id', userController.getUserProfile)
+router.get('/:user_id', userController.getUserProfile)
 
 //update user profile
-router.put('/:id', userController.updateUserProfile)
+router.put('/:user_id', userController.updateUserProfile)
 
 //delete user account
-router.delete('/:id', userController.deleteUser)
+router.delete('/:user_id', userController.deleteUser)
 
 module.exports = router;

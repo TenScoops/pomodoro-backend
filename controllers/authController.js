@@ -27,7 +27,7 @@ const googleStrategy = new GoogleStrategy({
 
 //When a user logs in, this function saves their user ID to the session
 const serializeUser = function(user, cb) {
-    cb(null, user.user_id)
+    cb(null, user.user_id)// Save user_id to the session
 }
 
 //this function uses the saved user ID to fetch the full user details from 
@@ -36,7 +36,7 @@ const deserializeUser = async function(id, cb) {
     try {
         const [rows] = await db.execute('SELECT * FROM users WHERE user_id = ?', [id]);
         if (rows.length > 0) {
-            cb(null, rows[0]);
+            cb(null, rows[0]);// Attach user object to req.user
         } else {
             cb(null, false);
         }
@@ -74,17 +74,22 @@ const checkAuthStatus = (req, res) => {
     if (req.isAuthenticated()) {
         res.status(200).json({ isAuthenticated: true });
     } else {
-        res.status(200).json({ isAuthenticated: false });
+        res.status(500).json({ isAuthenticated: false });
     }
 }
 
 const getUser = (req, res) => {
     if (req.isAuthenticated()) {
-        res.json({ username: req.user.name, loggedIn: true });
+        res.json({
+            user_id: req.user.user_id,
+            username: req.user.name,
+            email: req.user.email,
+            loggedIn: true
+        });
     } else {
         res.json({ loggedIn: false });
     }
-}
+};
 
 module.exports = {
     googleStrategy,
